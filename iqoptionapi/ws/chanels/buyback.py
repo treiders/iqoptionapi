@@ -5,6 +5,7 @@ from iqoptionapi.ws.chanels.base import Base
 
 class Buyback(Base):
     """Class for IQ option subscribe to buyback websocket chanel."""
+
     # pylint: disable=too-few-public-methods
 
     name = "buyback"

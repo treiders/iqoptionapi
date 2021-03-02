@@ -2,8 +2,11 @@
 import datetime
 
 from iqoptionapi.ws.chanels.base import Base
+
+
 class Changebalance(Base):
     """Class for IQ option buy websocket chanel."""
+
     # pylint: disable=too-few-public-methods
 
     name = "api_profile_changebalance"
@@ -16,10 +19,7 @@ class Changebalance(Base):
         :param option: The buying option.
         :param direction: The buying direction.
         """
-     
 
-        data = {
-            "balance_id":balance_id
-        }
+        data = {"balance_id": balance_id}
 
         self.send_websocket_request(self.name, data)

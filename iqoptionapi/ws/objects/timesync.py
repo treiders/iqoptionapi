@@ -1,7 +1,7 @@
 """Module for IQ Option TimeSync websocket object."""
 
-import time
 import datetime
+import time
 
 from iqoptionapi.ws.objects.base import Base
 
@@ -21,7 +21,7 @@ class TimeSync(Base):
 
         :returns: The server timestamp.
         """
-        while self.__server_timestamp==None:
+        while self.__server_timestamp == None:
             time.sleep(0.2)
             pass
 
