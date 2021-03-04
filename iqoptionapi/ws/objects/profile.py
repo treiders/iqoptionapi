@@ -4,7 +4,6 @@ from iqoptionapi.ws.objects.base import Base
 
 class Profile(Base):
     """Class for IQ Option Profile websocket object."""
-
     def __init__(self):
         super(Profile, self).__init__()
         self.__name = "profile"

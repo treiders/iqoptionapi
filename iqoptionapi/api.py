@@ -147,6 +147,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     user_profile_client = None
     leaderboard_userinfo_deals_client = None
     users_availability = None
+
     # ------------------
 
     def __init__(self, host, username, password, proxies=None):
@@ -184,9 +185,12 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         return "/".join((self.https_url, resource.url))
 
-    def send_http_request(
-        self, resource, method, data=None, params=None, headers=None
-    ):  # pylint: disable=too-many-arguments
+    def send_http_request(self,
+                          resource,
+                          method,
+                          data=None,
+                          params=None,
+                          headers=None):  # pylint: disable=too-many-arguments
         """Send http request to IQ Option server.
 
         :param resource: The instance of
@@ -219,9 +223,12 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         response.raise_for_status()
         return response
 
-    def send_http_request_v2(
-        self, url, method, data=None, params=None, headers=None
-    ):  # pylint: disable=too-many-arguments
+    def send_http_request_v2(self,
+                             url,
+                             method,
+                             data=None,
+                             params=None,
+                             headers=None):  # pylint: disable=too-many-arguments
         """Send http request to IQ Option server.
 
         :param resource: The instance of
@@ -235,15 +242,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         logger = logging.getLogger(__name__)
 
-        logger.debug(
-            method
-            + ": "
-            + url
-            + " headers: "
-            + str(self.session.headers)
-            + " cookies: "
-            + str(self.session.cookies.get_dict())
-        )
+        logger.debug(method + ": " + url + " headers: " +
+                     str(self.session.headers) + " cookies: " +
+                     str(self.session.cookies.get_dict()))
 
         response = self.session.request(
             method=method,
@@ -269,7 +270,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         """
         return self.websocket_client.wss
 
-    def send_websocket_request(self, name, msg, request_id="", no_force_send=True):
+    def send_websocket_request(self,
+                               name,
+                               msg,
+                               request_id="",
+                               no_force_send=True):
         """Send websocket request to IQ Option server.
 
         :param str name: The websocket request name.
@@ -280,9 +285,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
 
         data = json.dumps(dict(name=name, msg=msg, request_id=request_id))
 
-        while (
-            global_value.ssl_Mutual_exclusion or global_value.ssl_Mutual_exclusion_write
-        ) and no_force_send:
+        while (global_value.ssl_Mutual_exclusion
+               or global_value.ssl_Mutual_exclusion_write) and no_force_send:
             pass
         global_value.ssl_Mutual_exclusion_write = True
         self.websocket.send(data)
@@ -382,9 +386,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         # sendResults True/False
         # {"name":"sendMessage","request_id":"142","msg":{"name":"reset-training-balance","version":"2.0"}}
 
-        self.send_websocket_request(
-            name="sendMessage", msg={"name": "reset-training-balance", "version": "2.0"}
-        )
+        self.send_websocket_request(name="sendMessage",
+                                    msg={
+                                        "name": "reset-training-balance",
+                                        "version": "2.0"
+                                    })
 
     @property
     def changebalance(self):
@@ -533,7 +539,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             msg = {
                 "name": name,
                 "version": "1.0",
-                "params": {"routingFilters": {"instrument_type": str(instrument_type)}},
+                "params": {
+                    "routingFilters": {
+                        "instrument_type": str(instrument_type)
+                    }
+                },
             }
 
         elif name == "portfolio.get-positions":
@@ -559,7 +569,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
                 },
             }
 
-        self.send_websocket_request(name=M_name, msg=msg, request_id=request_id)
+        self.send_websocket_request(name=M_name,
+                                    msg=msg,
+                                    request_id=request_id)
 
     def set_user_settings(self, balanceId, request_id=""):
         # Main name:"unsubscribeMessage"/"subscribeMessage"/"sendMessage"(only for portfolio.get-positions")
@@ -572,12 +584,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             "body": {
                 "name": "traderoom_gl_common",
                 "version": 3,
-                "config": {"balanceId": balanceId},
+                "config": {
+                    "balanceId": balanceId
+                },
             },
         }
-        self.send_websocket_request(
-            name="sendMessage", msg=msg, request_id=str(request_id)
-        )
+        self.send_websocket_request(name="sendMessage",
+                                    msg=msg,
+                                    request_id=str(request_id))
 
     def subscribe_position_changed(self, name, instrument_type, request_id):
         # instrument_type="multi-option","crypto","forex","cfd"
@@ -585,20 +599,24 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         msg = {
             "name": name,
             "version": "1.0",
-            "params": {"routingFilters": {"instrument_type": str(instrument_type)}},
+            "params": {
+                "routingFilters": {
+                    "instrument_type": str(instrument_type)
+                }
+            },
         }
-        self.send_websocket_request(
-            name="subscribeMessage", msg=msg, request_id=str(request_id)
-        )
+        self.send_websocket_request(name="subscribeMessage",
+                                    msg=msg,
+                                    request_id=str(request_id))
 
     def setOptions(self, request_id, sendResults):
         # sendResults True/False
 
         msg = {"sendResults": sendResults}
 
-        self.send_websocket_request(
-            name="setOptions", msg=msg, request_id=str(request_id)
-        )
+        self.send_websocket_request(name="setOptions",
+                                    msg=msg,
+                                    request_id=str(request_id))
 
     @property
     def Subscribe_Top_Assets_Updated(self):
@@ -697,7 +715,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         msg = {
             "name": "get-underlying-list",
             "version": "2.0",
-            "body": {"type": "digital-option"},
+            "body": {
+                "type": "digital-option"
+            },
         }
         self.send_websocket_request(name="sendMessage", msg=msg)
 
@@ -824,7 +844,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             except:
                 pass
 
-
     # @tokensms.setter
     def setTokenSMS(self, response):
         token_sms = response.json()["token"]
@@ -839,13 +858,10 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         response = None
         try:
             if self.token_login2fa is None:
-                response = self.login(
-                    self.username, self.password
-                )  # pylint: disable=not-callable
+                response = self.login(self.username, self.password)  # pylint: disable=not-callable
             else:
-                response = self.login_2fa(
-                    self.username, self.password, self.token_login2fa
-                )
+                response = self.login_2fa(self.username, self.password,
+                                          self.token_login2fa)
         except Exception as e:
             logger = logging.getLogger(__name__)
             logger.error(e)
@@ -904,9 +920,8 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             self.send_ssid()
 
         # set ssis cookie
-        requests.utils.add_dict_to_cookiejar(
-            self.session.cookies, {"ssid": global_value.SSID}
-        )
+        requests.utils.add_dict_to_cookiejar(self.session.cookies,
+                                             {"ssid": global_value.SSID})
 
         self.timesync.server_timestamp = None
         while True:

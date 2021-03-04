@@ -8,7 +8,6 @@ from iqoptionapi.ws.objects.base import Base
 
 class TimeSync(Base):
     """Class for IQ Option TimeSync websocket object."""
-
     def __init__(self):
         super(TimeSync, self).__init__()
         self.__name = "timeSync"
