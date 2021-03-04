@@ -871,9 +871,9 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     def send_ssid(self):
         self.profile.msg = None
         self.ssid(global_value.SSID)  # pylint: disable=not-callable
-        while self.profile.msg == None:
+        while self.profile.msg is None:
             pass
-        if self.profile.msg == False:
+        if not self.profile.msg:
             return False
         else:
             return True
@@ -889,15 +889,15 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             pass
         check_websocket, websocket_reason = self.start_websocket()
 
-        if check_websocket == False:
+        if not check_websocket:
             return check_websocket, websocket_reason
 
         # doing temp ssid reconnect for speed up
-        if global_value.SSID != None:
+        if global_value.SSID is not None:
 
             check_ssid = self.send_ssid()
 
-            if check_ssid == False:
+            if not check_ssid:
                 # ssdi time out need reget,if sent error ssid,the weksocket will close by iqoption server
                 response = self.get_ssid()
                 try:
@@ -926,7 +926,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         self.timesync.server_timestamp = None
         while True:
             try:
-                if self.timesync.server_timestamp != None:
+                if self.timesync.server_timestamp is not None:
                     break
             except:
                 pass

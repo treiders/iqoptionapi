@@ -128,14 +128,14 @@ class WebsocketClient(object):
         elif message["name"] == "profile":
             # --------------all-------------
             self.api.profile.msg = message["msg"]
-            if self.api.profile.msg != False:
+            if self.api.profile.msg:
                 # ---------------------------
                 try:
                     self.api.profile.balance = message["msg"]["balance"]
                 except:
                     pass
                 # Set Default account
-                if global_value.balance_id == None:
+                if global_value.balance_id is None:
                     for balance in message["msg"]["balances"]:
                         if balance["type"] == 4:
                             global_value.balance_id = balance["id"]
@@ -272,7 +272,7 @@ class WebsocketClient(object):
             self.api.deferred_orders = message
 
         elif message["name"] == "technical-indicators":
-            if message["msg"].get("indicators") != None:
+            if message["msg"].get("indicators") is not None:
                 self.api_dict_clean(self.api.technical_indicators)
                 self.api.technical_indicators[message["request_id"]] = message["msg"][
                     "indicators"
@@ -306,7 +306,7 @@ class WebsocketClient(object):
         elif message["name"] == "auto-margin-call-changed":
             self.api.auto_margin_call_changed_respond = message
         elif message["name"] == "digital-option-placed":
-            if message["msg"].get("id") != None:
+            if message["msg"].get("id") is not None:
                 self.api_dict_clean(self.api.digital_option_placed_id)
                 self.api.digital_option_placed_id[message["request_id"]] = message[
                     "msg"
@@ -329,7 +329,7 @@ class WebsocketClient(object):
             for data in message["msg"]["quotes"]:
                 # FROM IQ OPTION SOURCE CODE
                 # https://github.com/Lu-Yi-Hsun/Decompiler-IQ-Option/blob/master/Source%20Code/5.5.1/sources/com/iqoption/dto/entity/strike/Quote.java#L91
-                if data["price"]["ask"] == None:
+                if data["price"]["ask"] is None:
                     ProfitPercent = None
                 else:
                     askPrice = (float)(data["price"]["ask"])
