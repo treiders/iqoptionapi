@@ -70,6 +70,7 @@ class IQ_Option:
             "User-Agent": USER_AGENT
         }
         self.SESSION_COOKIE = {}
+        self.api = None
         #
         # --start
         # self.connect()

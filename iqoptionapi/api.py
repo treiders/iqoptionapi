@@ -1,11 +1,11 @@
 """Module for IQ Option API."""
-
 import atexit
 import json
 import logging
 import ssl
 import threading
 from collections import defaultdict, deque
+from typing import Any, Dict, List
 
 import requests
 
@@ -106,18 +106,18 @@ def nested_dict(n, type):
 requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 
 
-class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
+class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
     """Class for communication with IQ Option API."""
 
     # pylint: disable=too-many-public-methods
-    socket_option_opened = {}
-    socket_option_closed = {}
+    socket_option_opened: Dict[str, Any] = {}
+    socket_option_closed: Dict[str, Any] = {}
     timesync = TimeSync()
     profile = Profile()
     candles = Candles()
     listinfodata = ListInfoData()
-    api_option_init_all_result = []
-    api_option_init_all_result_v2 = []
+    api_option_init_all_result: List[Any] = []
+    api_option_init_all_result_v2: List[Any] = []
     # for digital
     underlying_list_data = None
     position_changed = None
@@ -129,14 +129,14 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     # position_changed_data = nested_dict(2, dict)
     # microserviceName_binary_options_name_option=nested_dict(2,dict)
     order_async = nested_dict(2, dict)
-    order_binary = {}
+    order_binary: Dict[str, Any] = {}
     game_betinfo = Game_betinfo_data()
     instruments = None
     financial_information = None
     buy_id = None
     buy_order_id = None
-    traders_mood = {}  # get hight(put) %
-    technical_indicators = {}
+    traders_mood: Dict[str, Any] = {}  # get hight(put) %
+    technical_indicators: Dict[str, Any] = {}
     order_data = None
     positions = None
     position = None
@@ -148,7 +148,7 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     close_position_data = None
     overnight_fee = None
     # ---for real time
-    digital_option_placed_id = {}
+    digital_option_placed_id: Dict[str, Any] = {}
     live_deal_data = nested_dict(3, deque)
 
     subscribe_commission_changed_data = nested_dict(2, dict)
@@ -162,11 +162,11 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
     sold_digital_options_respond = None
     tpsl_changed_respond = None
     auto_margin_call_changed_respond = None
-    top_assets_updated_data = {}
+    top_assets_updated_data: Dict[str, Any] = {}
     get_options_v2_data = None
     # --for binary option multi buy
     buy_multi_result = None
-    buy_multi_option = {}
+    buy_multi_option: Dict[str, Any] = {}
     #
     result = None
     training_balance_reset_request = None
