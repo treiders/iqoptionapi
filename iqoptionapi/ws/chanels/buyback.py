@@ -12,4 +12,3 @@ class Buyback(Base):
 
     def __call__(self):
         """Method to send message to buyback websocket chanel."""
-        pass
