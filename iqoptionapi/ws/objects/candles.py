@@ -5,7 +5,6 @@ from iqoptionapi.ws.objects.base import Base
 
 class Candle(object):
     """Class for IQ Option candle."""
-
     def __init__(self, candle_data):
         """
         :param candle_data: The list of candles data.
@@ -66,7 +65,6 @@ class Candle(object):
 
 class Candles(Base):
     """Class for IQ Option Candles websocket object."""
-
     def __init__(self):
         super(Candles, self).__init__()
         self.__name = "candles"
