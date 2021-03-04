@@ -365,7 +365,7 @@ class WebsocketClient(object):
             active = list(OP_code.ACTIVES.keys())[
                 list(OP_code.ACTIVES.values()).index(active_id)
             ]
-            _type = message["msg"]["option_type"]
+
             try:
                 # self.api.live_deal_data[name][active][_type].appendleft(
                 #     message["msg"])
@@ -384,7 +384,7 @@ class WebsocketClient(object):
             active = list(OP_code.ACTIVES.keys())[
                 list(OP_code.ACTIVES.values()).index(active_id)
             ]
-            _type = message["msg"]["expiration_type"]
+
             try:
                 # self.api.live_deal_data[name][active][_type].appendleft(
                 #     message["msg"])
@@ -406,7 +406,7 @@ class WebsocketClient(object):
             active = list(OP_code.ACTIVES.keys())[
                 list(OP_code.ACTIVES.values()).index(active_id)
             ]
-            _type = message["msg"]["instrument_type"]
+
             try:
                 # self.api.live_deal_data[name][active][_type].appendleft(
                 #     message["msg"])

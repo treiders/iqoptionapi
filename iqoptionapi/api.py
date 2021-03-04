@@ -5,7 +5,6 @@ import json
 import logging
 import ssl
 import threading
-import time
 from collections import defaultdict, deque
 
 import requests
@@ -528,7 +527,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
         # Main name:"unsubscribeMessage"/"subscribeMessage"/"sendMessage"(only for portfolio.get-positions")
         # name:"portfolio.order-changed"/"portfolio.get-positions"/"portfolio.position-changed"
         # instrument_type="cfd"/"forex"/"crypto"/"digital-option"/"turbo-option"/"binary-option"
-        logger = logging.getLogger(__name__)
         M_name = Main_Name
         request_id = str(request_id)
         if name == "portfolio.order-changed":
@@ -826,7 +824,6 @@ class IQOptionAPI(object):  # pylint: disable=too-many-instance-attributes
             except:
                 pass
 
-            pass
 
     # @tokensms.setter
     def setTokenSMS(self, response):

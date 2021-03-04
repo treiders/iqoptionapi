@@ -2,7 +2,6 @@
 import json
 import logging
 import operator
-import threading
 import time
 from collections import defaultdict, deque
 from datetime import datetime, timedelta
