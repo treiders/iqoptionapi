@@ -372,12 +372,12 @@ class IQ_Option:
         init_info = self.get_all_init()
         for actives in init_info["result"]["turbo"]["actives"]:
             name = init_info["result"]["turbo"]["actives"][actives]["name"]
-            name = name[name.index(".") + 1 : len(name)]
+            name = name[name.index(".") + 1: len(name)]
             detail[name]["turbo"] = init_info["result"]["turbo"]["actives"][actives]
 
         for actives in init_info["result"]["binary"]["actives"]:
             name = init_info["result"]["binary"]["actives"][actives]["name"]
-            name = name[name.index(".") + 1 : len(name)]
+            name = name[name.index(".") + 1: len(name)]
             detail[name]["binary"] = init_info["result"]["binary"]["actives"][actives]
         return detail
 
@@ -386,7 +386,7 @@ class IQ_Option:
         init_info = self.get_all_init()
         for actives in init_info["result"]["turbo"]["actives"]:
             name = init_info["result"]["turbo"]["actives"][actives]["name"]
-            name = name[name.index(".") + 1 : len(name)]
+            name = name[name.index(".") + 1: len(name)]
             all_profit[name]["turbo"] = (
                 100.0
                 - init_info["result"]["turbo"]["actives"][actives]["option"]["profit"][
@@ -396,7 +396,7 @@ class IQ_Option:
 
         for actives in init_info["result"]["binary"]["actives"]:
             name = init_info["result"]["binary"]["actives"][actives]["name"]
-            name = name[name.index(".") + 1 : len(name)]
+            name = name[name.index(".") + 1: len(name)]
             all_profit[name]["binary"] = (
                 100.0
                 - init_info["result"]["binary"]["actives"][actives]["option"]["profit"][

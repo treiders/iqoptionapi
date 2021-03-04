@@ -1,5 +1,3 @@
-import time
-
 import iqoptionapi.global_value as global_value
 from iqoptionapi.ws.chanels.base import Base
 

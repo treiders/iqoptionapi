@@ -1,6 +1,3 @@
-import datetime
-import time
-
 from iqoptionapi.ws.chanels.base import Base
 
 
@@ -11,7 +8,10 @@ class Traders_mood_subscribe(Base):
         data = {
             "name": "traders-mood-changed",
             "params": {
-                "routingFilters": {"instrument": instrument, "asset_id": active}
+                "routingFilters": {
+                    "instrument": instrument,
+                    "asset_id": active
+                }
             },
         }
 
@@ -25,7 +25,10 @@ class Traders_mood_unsubscribe(Base):
         data = {
             "name": "traders-mood-changed",
             "params": {
-                "routingFilters": {"instrument": instrument, "asset_id": active}
+                "routingFilters": {
+                    "instrument": instrument,
+                    "asset_id": active
+                }
             },
         }
 

@@ -19,7 +19,10 @@ class Subscribe(Base):
         data = {
             "name": "candle-generated",
             "params": {
-                "routingFilters": {"active_id": str(active_id), "size": int(size)}
+                "routingFilters": {
+                    "active_id": str(active_id),
+                    "size": int(size)
+                }
             },
         }
 
@@ -37,7 +40,11 @@ class Subscribe_candles(Base):
 
         data = {
             "name": "candles-generated",
-            "params": {"routingFilters": {"active_id": str(active_id)}},
+            "params": {
+                "routingFilters": {
+                    "active_id": str(active_id)
+                }
+            },
         }
 
         self.send_websocket_request(self.name, data)
@@ -80,7 +87,11 @@ class Subscribe_top_assets_updated(Base):
 
         data = {
             "name": "top-assets-updated",
-            "params": {"routingFilters": {"instrument_type": str(instrument_type)}},
+            "params": {
+                "routingFilters": {
+                    "instrument_type": str(instrument_type)
+                }
+            },
             "version": "1.2",
         }
         self.send_websocket_request(self.name, data)
@@ -99,7 +110,11 @@ class Subscribe_commission_changed(Base):
 
         data = {
             "name": "commission-changed",
-            "params": {"routingFilters": {"instrument_type": str(instrument_type)}},
+            "params": {
+                "routingFilters": {
+                    "instrument_type": str(instrument_type)
+                }
+            },
             "version": "1.0",
         }
         self.send_websocket_request(self.name, data)
@@ -124,7 +139,10 @@ class Subscribe_live_deal(Base):
         data = {
             "name": name,
             "params": {
-                "routingFilters": {_active_id: int(active_id), _type_name: str(_type)}
+                "routingFilters": {
+                    _active_id: int(active_id),
+                    _type_name: str(_type)
+                }
             },
             "version": "2.0",
         }

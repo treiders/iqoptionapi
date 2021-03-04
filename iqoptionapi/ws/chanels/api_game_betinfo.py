@@ -1,6 +1,4 @@
-import datetime
 import logging
-import time
 
 from iqoptionapi.ws.chanels.base import Base
 

@@ -17,7 +17,9 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 snakeviz = "*"
-
+autopep8 = "*"
+autoflake = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.9"

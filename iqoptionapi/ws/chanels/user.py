@@ -1,8 +1,5 @@
 """Module for IQ option unsubscribe websocket chanel."""
 
-import datetime
-
-import iqoptionapi.constants as OP_code
 from iqoptionapi.ws.chanels.base import Base
 
 
@@ -14,7 +11,9 @@ class Get_user_profile_client(Base):
 
         data = {
             "name": "get-user-profile-client",
-            "body": {"user_id": int(user_id)},
+            "body": {
+                "user_id": int(user_id)
+            },
             "version": "1.0",
         }
 
@@ -31,7 +30,10 @@ class Request_leaderboard_userinfo_deals_client(Base):
 
         data = {
             "name": "request-leaderboard-userinfo-deals-client",
-            "body": {"country_ids": [country_id], "requested_user_id": int(user_id)},
+            "body": {
+                "country_ids": [country_id],
+                "requested_user_id": int(user_id)
+            },
             "version": "1.0",
         }
 
@@ -48,7 +50,9 @@ class Get_users_availability(Base):
 
         data = {
             "name": "get-users-availability",
-            "body": {"user_ids": [user_id]},
+            "body": {
+                "user_ids": [user_id]
+            },
             "version": "1.0",
         }
 

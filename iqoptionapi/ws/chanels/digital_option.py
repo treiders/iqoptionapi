@@ -1,7 +1,5 @@
 # python
 
-import datetime
-import time
 from random import randint
 
 import iqoptionapi.global_value as global_value
@@ -14,7 +12,7 @@ class Digital_options_place_digital_option(Base):
     name = "sendMessage"
 
     def __call__(self, instrument_id, amount, user_balance_id=None):
-        if user_balance_id == None:
+        if not user_balance_id:
             user_balance_id = int(self.api.profile.balance_id)
 
         data = {
@@ -38,6 +36,8 @@ class Digital_options_close_position(Base):
         data = {
             "name": "digital-options.close-position",
             "version": "1.0",
-            "body": {"position_id": int(position_id)},
+            "body": {
+                "position_id": int(position_id)
+            },
         }
         self.send_websocket_request(self.name, data)

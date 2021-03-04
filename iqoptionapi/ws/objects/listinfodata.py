@@ -1,5 +1,4 @@
 """Module for IQ Option Candles websocket object."""
-from collections import OrderedDict
 
 from iqoptionapi.ws.objects.base import Base
 
@@ -14,7 +13,10 @@ class ListInfoData(Base):
 
     # --------------------
     def set(self, win, game_state, id_number):
-        self.listinfodata_dict[id_number] = {"win": win, "game_state": game_state}
+        self.listinfodata_dict[id_number] = {
+            "win": win,
+            "game_state": game_state
+        }
 
     def delete(self, id_number):
         del self.listinfodata_dict[id_number]

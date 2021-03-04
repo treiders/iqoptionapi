@@ -1,7 +1,3 @@
-import datetime
-import logging
-import time
-
 import iqoptionapi.global_value as global_value
 from iqoptionapi.expiration import get_expiration_time
 from iqoptionapi.ws.chanels.base import Base

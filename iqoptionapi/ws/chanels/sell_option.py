@@ -1,5 +1,3 @@
-import time
-
 from iqoptionapi.ws.chanels.base import Base
 
 
@@ -18,7 +16,9 @@ class Sell_Option(Base):
         data = {
             "name": "sell-options",
             "version": "2.0",
-            "body": {"options_ids": (options_ids)},
+            "body": {
+                "options_ids": (options_ids)
+            },
         }
 
         self.send_websocket_request(self.name, data)

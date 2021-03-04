@@ -1,5 +1,4 @@
 """Module for IQ Option buyV2 websocket chanel."""
-import datetime
 
 from iqoptionapi.ws.chanels.base import Base
 

@@ -1,7 +1,5 @@
 """Module for IQ option candles websocket chanel."""
 
-import time
-
 from iqoptionapi.ws.chanels.base import Base
 
 
@@ -26,9 +24,12 @@ class GetCandles(Base):
             "version": "2.0",
             "body": {
                 "active_id": int(active_id),
-                "size": interval,  # time size sample:if interval set 1 mean get time 0~1 candle
-                "to": int(endtime),  # int(self.api.timesync.server_timestamp),
-                "count": count,  # get how many candle
+                # time size sample:if interval set 1 mean get time 0~1 candle
+                "size": interval,
+                # int(self.api.timesync.server_timestamp),
+                "to": int(endtime),
+                # get how many candle
+                "count": count,
                 "": active_id,
             },
         }

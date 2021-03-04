@@ -31,6 +31,10 @@ class Login2FA(Resource):
 
         :returns: The instance of :class:`requests.Response`.
         """
-        data = {"identifier": username, "password": password, "token": token_login}
+        data = {
+            "identifier": username,
+            "password": password,
+            "token": token_login
+        }
 
         return self._post(data=data)

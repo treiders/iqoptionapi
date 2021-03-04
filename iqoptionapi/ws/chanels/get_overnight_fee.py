@@ -1,6 +1,3 @@
-import datetime
-import time
-
 from iqoptionapi.ws.chanels.base import Base
 
 

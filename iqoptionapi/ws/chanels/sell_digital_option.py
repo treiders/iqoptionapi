@@ -18,13 +18,17 @@ class Sell_Digital_Option(Base):
             data = {
                 "name": "digital-options.close-position-batch",
                 "version": "1.0",
-                "body": {"position_ids": (position_ids)},
+                "body": {
+                    "position_ids": (position_ids)
+                },
             }
         else:
             data = {
                 "name": "digital-options.close-position",
                 "version": "1.0",
-                "body": {"position_id": position_ids},
+                "body": {
+                    "position_id": position_ids
+                },
             }
         request_id = int(str(time.time()).split(".")[1])
         self.send_websocket_request(self.name, data, request_id)

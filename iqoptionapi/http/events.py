@@ -16,8 +16,9 @@ class Events(Resource):
         :returns: The instance of :class:`requests.Response`.
         """
         return self.api.send_http_request_v2(
-            method=method, url="https://event.iqoption.com/api/v1/events", data=data
-        )
+            method=method,
+            url="https://event.iqoption.com/api/v1/events",
+            data=data)
 
     def __call__(self, method, data, headers=None):
         """Method to get IQ Option API login http request.
