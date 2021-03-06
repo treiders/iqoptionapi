@@ -1,27 +1,27 @@
 from .connection import WSConnection
 from .http_session import HTTPSession
 
-
 if __name__ == "__main__":
-    import sys
     import asyncio
-    import requests
-    import time
     import json
+    import sys
+    import time
+
     from websockets.client import connect as _connect
 
     _, username, password = sys.argv
 
     async def ainput(string: str) -> str:
         await asyncio.get_event_loop().run_in_executor(
-                None, lambda s=string: sys.stdout.write(s+' '))
+            None, lambda s=string: sys.stdout.write(s + ' '))
         content = await asyncio.get_event_loop().run_in_executor(
-                None, sys.stdin.readline)
+            None, sys.stdin.readline)
         return content.strip()
 
     async def echonnect(pid: int):
         client = await _connect('wss://iqoption.com/echo/websocket')
         connection = WSConnection(client=client)
+
         def print_msg(msg):
             if 'heartbeat' not in msg and 'timeSync' not in msg:
                 print(f'\n`{msg}`')
@@ -61,9 +61,11 @@ if __name__ == "__main__":
                 print('exiting...')
                 break
 
-
             request_id = int(str(time.time()).split(".")[1])
-            data = json.dumps(dict(name=name, msg=json.loads(msg), request_id=request_id))
+            data = json.dumps(
+                dict(
+                    name=name, msg=json.loads(msg),
+                    request_id=request_id))
             print(f"sending... {data}")
             connection.send(data)
 

@@ -1,14 +1,15 @@
-from typing import Dict, Any
 from dataclasses import dataclass, field
-from rx import create, Observable, from_future, operators as _op
-from rx.subject import Subject
+
 from rx.scheduler.eventloop import AsyncIOScheduler
-from websockets.client import WebSocketClientProtocol, connect as _connect
+from rx.subject import Subject
+from websockets.client import WebSocketClientProtocol
+from websockets.client import connect as _connect
 
 
-def _wire_inbox(client) -> None:
+def _wire_inbox(client) -> Subject:
     inbox = Subject()
     loop = client.loop
+
     async def async_emiter():
         try:
             async for message in client:
@@ -22,6 +23,7 @@ def _wire_inbox(client) -> None:
 
 def _wire_outbox(client) -> Subject:
     outbox = Subject()
+
     async def send(message):
         await client.send(message)
 
@@ -41,7 +43,7 @@ class WSConnection:
     def __post_init__(self):
         self.outbox = _wire_outbox(self.client)
         self.inbox = _wire_inbox(self.client)
-    
+
     def send(self, message):
         return self.outbox.on_next(message)
 
@@ -54,13 +56,13 @@ class WSConnection:
 
 
 if __name__ == "__main__":
-    import asyncio
+    from asyncio import Queue, gather, run, sleep
 
     async def echonnect(pid: int):
         client = await _connect('wss://echo.websocket.org/')
         connection = WSConnection(client=client)
 
-        calls = asyncio.Queue()
+        calls: Queue[int] = Queue()
         connection.subscribe(on_next=lambda _: calls.get_nowait())
 
         connection.subscribe(
@@ -74,16 +76,16 @@ if __name__ == "__main__":
 
         # usually we should wait forever
         # but for this example we will wait
-        # only until receive N events 
+        # only until receive N events
         while not calls.empty():
-            await asyncio.sleep(0.01)
+            await sleep(0.01)
 
         print(f"{pid} I'm done")
-    
+
     async def main():
-        await asyncio.gather(
+        await gather(
             echonnect(1),
             echonnect(2),
             echonnect(3))
 
-    asyncio.run(main())
+    run(main())

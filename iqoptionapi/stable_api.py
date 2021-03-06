@@ -886,7 +886,7 @@ class IQ_Option:
 
     def get_optioninfo_v2(self, limit):
         self.api.get_options_v2_data = None
-        self.api.get_options_v2(limit, "binary,turbo", global_vuale.balance_id)
+        self.api.get_options_v2(limit, "binary,turbo", global_value.balance_id)
         while self.api.get_options_v2_data is None:
             pass
 
@@ -907,7 +907,7 @@ class IQ_Option:
                     ACTION[idx],
                     expirations[idx],
                     idx,
-                    balance_id
+                    global_value.balance_id
                 )
             while len(self.api.buy_multi_option) < buy_len:
                 pass
@@ -947,7 +947,7 @@ class IQ_Option:
             option,
             expired,
             req_id,
-            balance_id,
+            global_value.balance_id,
         )
         start_t = time.time()
         id = None
@@ -1154,7 +1154,8 @@ class IQ_Option:
                          + "M" + action + "SPT")
         # self.api.digital_option_placed_id = None
 
-        request_id = self.api.place_digital_option(instrument_id, amount, global_value.balance_id)
+        request_id = self.api.place_digital_option(
+            instrument_id, amount, global_value.balance_id)
 
         while self.api.digital_option_placed_id.get(request_id) is None:
             pass
@@ -1537,7 +1538,7 @@ class IQ_Option:
         # instrument_type=crypto forex fx-option multi-option cfd digital-option turbo-option
         self.api.position_history_v2 = None
         self.api.get_position_history_v2(
-            instrument_type, global_value.balance_id, limit, 
+            instrument_type, global_value.balance_id, limit,
             offset, start, end)
         while self.api.position_history_v2 is None:
             pass
