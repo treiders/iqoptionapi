@@ -12,7 +12,6 @@ def _wire_inbox(client) -> None:
     async def async_emiter():
         try:
             async for message in client:
-                print(message)
                 inbox.on_next(message)
         except Exception as error:
             inbox.on_error(error)
@@ -46,18 +45,45 @@ class WSConnection:
     def send(self, message):
         return self.outbox.on_next(message)
 
+    def subscribe(self, on_next=None, on_error=None, on_completed=None):
+        return self.inbox.subscribe(
+            on_next=on_next,
+            on_error=on_error,
+            on_completed=on_completed
+        )
+
 
 if __name__ == "__main__":
     import asyncio
 
-    async def main():        
+    async def echonnect(pid: int):
         client = await _connect('wss://echo.websocket.org/')
         connection = WSConnection(client=client)
-        connection.inbox.pipe(
-            _op.map(lambda message: print(f"bad pun intended `{message}`"))
-        )
-        while True:
-            await asyncio.sleep(0.05)
-            connection.send("here comes your mean")
+
+        calls = asyncio.Queue()
+        connection.subscribe(on_next=lambda _: calls.get_nowait())
+
+        connection.subscribe(
+            on_next=lambda msg: print(f"bad pun received `{msg}`"))
+
+        for call_id in range(pid):
+            await calls.put(call_id)
+            calls.empty()
+            print(f"{pid}: sendind pun {call_id + 1}")
+            connection.send(f"{pid}: here comes your mean {call_id + 1}")
+
+        # usually we should wait forever
+        # but for this example we will wait
+        # only until receive N events 
+        while not calls.empty():
+            await asyncio.sleep(0.01)
+
+        print(f"{pid} I'm done")
+    
+    async def main():
+        await asyncio.gather(
+            echonnect(1),
+            echonnect(2),
+            echonnect(3))
 
     asyncio.run(main())
