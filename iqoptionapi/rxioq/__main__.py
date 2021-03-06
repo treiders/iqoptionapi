@@ -1,4 +1,5 @@
 from .connection import WSConnection
+from .http_session import HTTPSession
 
 
 if __name__ == "__main__":
@@ -19,7 +20,6 @@ if __name__ == "__main__":
         return content.strip()
 
     async def echonnect(pid: int):
-        session = requests.Session()
         client = await _connect('wss://iqoption.com/echo/websocket')
         connection = WSConnection(client=client)
         def print_msg(msg):
@@ -27,16 +27,8 @@ if __name__ == "__main__":
                 print(f'\n`{msg}`')
 
         connection.subscribe(on_next=print_msg)
-        
-        ## Websocket Login
-        data = {"identifier": username, "password": password}
-        response = session.request(
-            method="POST",
-            url="https://auth.iqoption.com/api/v2/login",
-            data=data,
-            headers={},
-        )
-        ssid = response.cookies["ssid"]
+
+        ssid = await HTTPSession(username=username, password=password).session_id
 
         request_id = int(str(time.time()).split(".")[1])
         data = json.dumps(dict(name="ssid", msg=ssid, request_id=request_id))
@@ -44,7 +36,7 @@ if __name__ == "__main__":
 
         while True:
             name = await ainput('Command?:\n')
-            if not name or name == 'help':
+            if not name.strip() or name.strip() == 'help':
                 print(
                     "IQOptions Commands:\n"
                     "exit\n\n"

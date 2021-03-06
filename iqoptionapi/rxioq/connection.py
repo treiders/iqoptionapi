@@ -49,7 +49,7 @@ class WSConnection:
         return self.inbox.subscribe(
             on_next=on_next,
             on_error=on_error,
-            on_completed=on_completed
+            on_completed=on_completed,
         )
 
 
