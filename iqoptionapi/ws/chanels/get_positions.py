@@ -1,11 +1,10 @@
-import iqoptionapi.global_value as global_value
 from iqoptionapi.ws.chanels.base import Base
 
 
 class Get_positions(Base):
     name = "sendMessage"
 
-    def __call__(self, instrument_type):
+    def __call__(self, instrument_type, balance_id):
         if instrument_type == "digital-option":
             name = "digital-options.get-positions"
         elif instrument_type == "fx-option":
@@ -16,7 +15,7 @@ class Get_positions(Base):
             "name": name,
             "body": {
                 "instrument_type": instrument_type,
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
             },
         }
         self.send_websocket_request(self.name, data)
@@ -38,12 +37,12 @@ class Get_position(Base):
 class Get_position_history(Base):
     name = "sendMessage"
 
-    def __call__(self, instrument_type):
+    def __call__(self, instrument_type, balance_id):
         data = {
             "name": "get-position-history",
             "body": {
                 "instrument_type": instrument_type,
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
             },
         }
         self.send_websocket_request(self.name, data)
@@ -52,7 +51,7 @@ class Get_position_history(Base):
 class Get_position_history_v2(Base):
     name = "sendMessage"
 
-    def __call__(self, instrument_types, limit, offset, start=0, end=0):
+    def __call__(self, instrument_types, balance_id, limit, offset, start=0, end=0):
         data = {
             "name": "portfolio.get-history-positions",
             "body": {
@@ -61,7 +60,7 @@ class Get_position_history_v2(Base):
                 "offset": offset,
                 "start": start,
                 "end": end,
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
             },
         }
         self.send_websocket_request(self.name, data)

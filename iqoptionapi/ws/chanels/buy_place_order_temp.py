@@ -1,4 +1,3 @@
-import iqoptionapi.global_value as global_value
 from iqoptionapi.ws.chanels.base import Base
 
 # work for forex digit cfd(stock)
@@ -24,6 +23,7 @@ class Buy_place_order_temp(Base):
         use_trail_stop,
         auto_margin_call,
         use_token_for_commission,
+        balance_id,
     ):
         data = {
             "name": "place-order-temp",
@@ -48,7 +48,7 @@ class Buy_place_order_temp(Base):
                     auto_margin_call
                 ),  # this is "Use Balance to Keep Position Open",if you want take_profit_value and stop_lose_value all be "Not Set",auto_margin_call need to True
                 "use_token_for_commission": bool(use_token_for_commission),
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
                 "client_platform_id": "9",  # important can not delete,9 mean your platform is linux
             },
         }

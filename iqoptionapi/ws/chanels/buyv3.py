@@ -1,4 +1,3 @@
-import iqoptionapi.global_value as global_value
 from iqoptionapi.expiration import get_expiration_time
 from iqoptionapi.ws.chanels.base import Base
 
@@ -7,7 +6,7 @@ class Buyv3(Base):
 
     name = "sendMessage"
 
-    def __call__(self, price, active, direction, duration, request_id):
+    def __call__(self, price, active, direction, duration, request_id, balance_id):
 
         # thank Darth-Carrotpie's code
         # https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
@@ -25,7 +24,7 @@ class Buyv3(Base):
                 "expired": int(exp),
                 "direction": direction.lower(),
                 "option_type_id": option,
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
             },
             "name": "binary-options.open-option",
             "version": "1.0",
@@ -37,7 +36,7 @@ class Buyv3_by_raw_expired(Base):
 
     name = "sendMessage"
 
-    def __call__(self, price, active, direction, option, expired, request_id):
+    def __call__(self, price, active, direction, option, expired, request_id, balance_id):
 
         # thank Darth-Carrotpie's code
         # https://github.com/Lu-Yi-Hsun/iqoptionapi/issues/6
@@ -53,7 +52,7 @@ class Buyv3_by_raw_expired(Base):
                 "expired": int(expired),
                 "direction": direction.lower(),
                 "option_type_id": option_id,
-                "user_balance_id": int(global_value.balance_id),
+                "user_balance_id": int(balance_id),
             },
             "name": "binary-options.open-option",
             "version": "1.0",
