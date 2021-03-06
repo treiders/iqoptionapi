@@ -13,18 +13,18 @@ if __name__ == "__main__":
 
     async def ainput(string: str) -> str:
         await asyncio.get_event_loop().run_in_executor(
-            None, lambda s=string: sys.stdout.write(s + ' '))
+            None, lambda s=string: sys.stdout.write(s + " "))
         content = await asyncio.get_event_loop().run_in_executor(
             None, sys.stdin.readline)
         return content.strip()
 
     async def echonnect(pid: int):
-        client = await _connect('wss://iqoption.com/echo/websocket')
+        client = await _connect("wss://iqoption.com/echo/websocket")
         connection = WSConnection(client=client)
 
         def print_msg(msg):
-            if 'heartbeat' not in msg and 'timeSync' not in msg:
-                print(f'\n`{msg}`')
+            if "heartbeat" not in msg and "timeSync" not in msg:
+                print(f"\n`{msg}`")
 
         connection.subscribe(on_next=print_msg)
 
@@ -35,8 +35,8 @@ if __name__ == "__main__":
         connection.send(data)
 
         while True:
-            name = await ainput('Command?:\n')
-            if not name.strip() or name.strip() == 'help':
+            name = await ainput("Command?:\n")
+            if not name.strip() or name.strip() == "help":
                 print(
                     "IQOptions Commands:\n"
                     "exit\n\n"
@@ -44,21 +44,21 @@ if __name__ == "__main__":
                 )
                 continue
 
-            if 'exit' == name:
-                print('exiting...')
+            if "exit" == name:
+                print("exiting...")
                 break
 
-            msg = await ainput('Param?:\n')
-            if not msg or msg == 'help':
+            msg = await ainput("Param?:\n")
+            if not msg or msg == "help":
                 print(
                     f"""IQOptions Params for {name}:\n"""
                     "exit\n\n"
-                    '{"name":"candle-generated","params":{"routingFilters":{"active_id":1,"size":1}}}\n'
+                    """{"name":"candle-generated","params":{"routingFilters":{"active_id":1,"size":1}}}\n"""
                 )
                 continue
 
-            if 'exit' == msg:
-                print('exiting...')
+            if "exit" == msg:
+                print("exiting...")
                 break
 
             request_id = int(str(time.time()).split(".")[1])
