@@ -41,7 +41,6 @@ def _wire_outbox(client) -> Subject:
     outbox = Subject()
 
     async def send(message):
-        print("out", message)
         await client.send(dumps(asdict(message)))
 
     outbox.subscribe(

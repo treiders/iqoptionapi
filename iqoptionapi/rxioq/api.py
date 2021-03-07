@@ -4,13 +4,14 @@ Interface expected by ..ws.chanels and ..http
 
 from asyncio import ensure_future
 from dataclasses import dataclass, field
-from typing import Awaitable
+from typing import Any, Awaitable, Dict
 
 from rx import operators as ops
 
 from .connection import WSConnection
 from .http_session import HTTPSession
 from .time_sync import TimeSync
+from . import streamed_data
 
 
 def url_of(endpoint) -> str:
@@ -27,13 +28,22 @@ class Api:
     http: HTTPSession
     websocket: WSConnection
     timesync: TimeSync = field(init=False)
+    profile: streamed_data.From[Dict[str, Any]] = field(init=False)
+    heartbeat: streamed_data.From[int] = field(init=False)
 
     def __post_init__(self):
-        time_source = self.websocket.inbox.pipe(
-            ops.filter(lambda message: message.name == 'timeSync'),
-            ops.map(lambda message: int(message.msg))
+        self.heartbeat = streamed_data.From[int](
+            self.websocket.inbox,
+            lambda message: message.name == 'timeSync',
+            lambda message: int(message.msg)
         )
-        self.timesync = TimeSync(source=time_source)
+
+        self.timesync = TimeSync(server_timestamp=self.heartbeat)
+        self.profile = streamed_data.From[int](
+            self.websocket.inbox,
+            lambda message: message.name == 'profile',
+            lambda message: message.msg
+        )
 
         future_session_id = ensure_future(self.http.session_id)
         loop = future_session_id.get_loop()

@@ -25,13 +25,15 @@ if __name__ == "__main__":
         def print_msg(msg):
             print(f"\n`{msg}`")
 
-        websocket.subscribe(on_next=print_msg)
+        # websocket.subscribe(on_next=print_msg)
 
         http = HTTPSession(username=username, password=password)
 
         api = Api(http=http, websocket=websocket)
 
         while True:
+            await api.profile.state_ready
+            print(f'Profile ready {api.profile.address}')
             name = await ainput("Command?:\n")
             if not name.strip() or name.strip() == "help":
                 print(
