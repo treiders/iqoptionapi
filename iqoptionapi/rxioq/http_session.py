@@ -27,7 +27,7 @@ class HTTPSession:
 
     async def send(self, url: str, method="POST", **request_args) -> Response:
         await self.login_response
-        return await _request(self.session, method=method, **request_args)
+        return await _request(self.session, url=url, method=method, **request_args)
 
 
 def _request(session: Session, **request_args):
