@@ -6,8 +6,14 @@ if __name__ == "__main__":
     import asyncio
     import json
     import sys
+    import logging
+    import os
 
     from websockets.client import connect as _connect
+
+
+    LOGLEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
+    logging.basicConfig(level=LOGLEVEL)
 
     _, username, password = sys.argv
 
@@ -21,12 +27,6 @@ if __name__ == "__main__":
     async def echonnect(pid: int):
         client = await _connect("wss://iqoption.com/echo/websocket")
         websocket = WSConnection(client=client)
-
-        # def print_msg(msg):
-        #     if msg.name not in ('heartbeat', 'timeSync'):
-        #         print(f"\n`{msg}`")
-
-        # websocket.subscribe(on_next=print_msg)
 
         http = HTTPSession(username=username, password=password)
 

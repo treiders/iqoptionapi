@@ -43,8 +43,6 @@ def _wire_inbox(client) -> Subject:
     async def async_emiter():
         try:
             async for message in client:
-                logger.debug(f"IN: {message}")
-
                 inbox.on_next(WSReceived(raw=loads(message)))
         except Exception as error:
             inbox.on_error(error)
@@ -57,7 +55,6 @@ def _wire_outbox(client) -> Subject:
     outbox = Subject()
 
     async def send(message):
-        logger.debug(f"OUT: {message}")
         await client.send(dumps(asdict(message)))
 
     outbox.subscribe(
