@@ -27,6 +27,7 @@ class Api:
     websocket: WSConnection
     timesync: TimeSync = field(init=False)
     profile: streamed_data.From[Dict[str, Any]] = field(init=False)
+    order_changed: streamed_data.From[Dict[str, Any]] = field(init=False)
     heartbeat: streamed_data.From[int] = field(init=False)
 
     def __post_init__(self):
@@ -41,6 +42,19 @@ class Api:
             self.websocket.inbox,
             lambda message: message.name == 'profile',
             lambda message: message.msg
+        )
+        self.order_changed = streamed_data.From[Dict[str, Any]](
+            self.websocket.inbox,
+            lambda message: message.name == 'order-changed',
+        )
+
+        self.all_info = streamed_data.From[Any](
+            self.websocket.inbox,
+            fn_map=lambda message: message,
+            fn_reduce=lambda last, new: {
+                **(last or {}),
+                new.name: new.raw
+            }
         )
 
         future_session_id = ensure_future(self.http.session_id)
@@ -67,3 +81,12 @@ class Api:
                                    proxies=None):
         return self.request(url, method=method, data=data,
                             params=params, headers=headers, proxies=proxies)
+
+    def __getattribute__(self, name):
+        try:
+            return super().__getattribute__(name)
+        except:
+            try:
+                return self.all_info and self.all_info.__getattribute__(name.replace('_', '-'))
+            except:
+                return self.all_info and self.all_info[name]

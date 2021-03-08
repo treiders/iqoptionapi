@@ -14,7 +14,8 @@ class From(Generic[T]):
 
     def __init__(self, source: Observable,
                  fn_filter: Callable[[WSReceived], bool] = lambda _: True,
-                 fn_map: Callable[[WSReceived], T] = lambda event: event.msg):
+                 fn_map: Callable[[WSReceived], T] = lambda event: event.msg,
+                 fn_reduce: Callable[[T, WSReceived], T] = lambda last, new: new):
 
         self._last_event = None
         self.state_ready = Future()
@@ -23,7 +24,7 @@ class From(Generic[T]):
             ops.filter(fn_filter), ops.map(fn_map))
 
         def update_me(message):
-            self._last_event = message
+            self._last_event = fn_reduce(self._last_event, message)
             if not self.state_ready.done():
                 self.state_ready.set_result(self)
 
@@ -67,100 +68,76 @@ class From(Generic[T]):
         return self._last_event.__ge__(other)
 
     def __add__(self, other):
-        return self._last_event.__add__(other)
+        return float(self).__add__(other)
 
     def __sub__(self, other):
-        return self._last_event.__sub__(other)
+        return float(self).__sub__(other)
 
     def __mul__(self, other):
-        return self._last_event.__mul__(other)
+        return float(self).__mul__(other)
 
     def __floordiv__(self, other):
-        return self._last_event.__floordiv__(other)
+        return float(self).__floordiv__(other)
 
     def __div__(self, other):
-        return self._last_event.__div__(other)
+        return float(self).__div__(other)
 
     def __truediv__(self, other):
-        return self._last_event.__truediv__(other)
+        return float(self).__truediv__(other)
 
     def __mod__(self, other):
-        return self._last_event.__mod__(other)
+        return float(self).__mod__(other)
 
     def __divmod__(self, other):
-        return self._last_event.__divmod__(other)
+        return float(self).__divmod__(other)
 
     def __pow__(self, other):
-        return self._last_event.__pow__(other)
-
-    def __lshift__(self, other):
-        return self._last_event.__lshift__(other)
-
-    def __rshift__(self, other):
-        return self._last_event.__rshift__(other)
+        return float(self).__pow__(other)
 
     def __radd__(self, other):
-        return self._last_event.__rshift__(other)
+        return other.__add__(float(self))
 
     def __rsub__(self, other):
-        return self._last_event.__sub__(other)
+        return other.__sub__(float(self))
 
     def __rmul__(self, other):
-        return self._last_event.__mul__(other)
+        return other.__mul__(float(self))
 
     def __rfloordiv__(self, other):
-        return self._last_event.__floordiv__(other)
+        return other.__floordiv__(float(self))
 
     def __rdiv__(self, other):
-        return self._last_event.__div__(other)
+        return other.__div__(float(self))
 
     def __rtruediv__(self, other):
-        return self._last_event.__truediv__(other)
+        return other.__truediv__(float(self))
 
     def __rmod__(self, other):
-        return self._last_event.__mod__(other)
+        return other.__mod__(float(self))
 
     def __rdivmod__(self, other):
-        return self._last_event.__divmod__(other)
+        return other.__divmod__(float(self))
 
     def __rpow__(self, other):
-        return self._last_event.__pow__(other)
-
-    def __rlshift__(self, other):
-        return self._last_event.__lshift__(other)
-
-    def __rrshift__(self, other):
-        return self._last_event.__rshift__(other)
+        return other.__pow__(float(self))
 
     def __rand__(self, other):
-        return self._last_event.__and__(other)
+        return other and bool(self)
 
     def __ror__(self, other):
-        return self._last_event.__or__(other)
-
-    def __rxor__(self, other):
-        return self._last_event.__xor__(other)
-
-    def __and__(self, other):
-        return self._last_event.__and__(other)
-
-    def __or__(self, other):
-        return self._last_event.__or__(other)
-
-    def __xor__(self, other):
-        return self._last_event.__xor__(other)
+        return other or bool(self)
 
     def __index__(self):
         return self._last_event.__index__()
 
     def __bool__(self):
-        return self._last_event.__bool__()
+        return bool(self._last_event)
 
     def __int__(self):
-        return self._last_event.__int__()
+        return int(self._last_event)
 
     def __float__(self):
-        return self._last_event.__float__()
+        return float(self._last_event)
 
     def __getattribute__(self, name):
         if name in ('_source', '_last_event', 'state_ready', 'subscribe'):
