@@ -1,7 +1,8 @@
 from dataclasses import asdict, dataclass, field
 from json import dumps, loads
+from logging import DEBUG, getLogger
 from time import time
-from typing import Any
+from typing import Any, Dict
 
 from rx import typing
 from rx.scheduler.eventloop import AsyncIOScheduler
@@ -9,17 +10,30 @@ from rx.subject import Subject
 from websockets.client import WebSocketClientProtocol
 from websockets.client import connect as _connect
 
+logger = getLogger(__file__)
+logger.setLevel(DEBUG)
+
 
 def new_request_id() -> int:
     return int(str(time()).split(".")[1])
 
 
 @dataclass
-class WSEvent:
+class WSSent:
     name: str
     msg: Any
-    session_id: Any = field(default=None)
     request_id: int = field(default_factory=new_request_id)
+
+
+@dataclass
+class WSReceived:
+    name: str = field(init=False)
+    msg: Any = field(init=False)
+    raw: Dict[str, Any] = field(repr=False, hash=False, compare=False)
+
+    def __post_init__(self):
+        self.name = self.raw.get('name')
+        self.msg = self.raw.get('msg')
 
 
 def _wire_inbox(client) -> Subject:
@@ -29,7 +43,9 @@ def _wire_inbox(client) -> Subject:
     async def async_emiter():
         try:
             async for message in client:
-                inbox.on_next(WSEvent(**loads(message)))
+                logger.debug(f"IN: {message}")
+
+                inbox.on_next(WSReceived(raw=loads(message)))
         except Exception as error:
             inbox.on_error(error)
 
@@ -41,6 +57,7 @@ def _wire_outbox(client) -> Subject:
     outbox = Subject()
 
     async def send(message):
+        logger.debug(f"OUT: {message}")
         await client.send(dumps(asdict(message)))
 
     outbox.subscribe(
@@ -53,8 +70,8 @@ def _wire_outbox(client) -> Subject:
 @dataclass
 class WSConnection:
     client: WebSocketClientProtocol
-    inbox: typing.Observable[WSEvent] = field(init=False)
-    outbox: typing.Observer[WSEvent] = field(init=False)
+    inbox: typing.Observable[WSReceived] = field(init=False)
+    outbox: typing.Observer[WSSent] = field(init=False)
 
     def __post_init__(self):
         self.outbox = _wire_outbox(self.client)
@@ -62,7 +79,7 @@ class WSConnection:
 
     def send(self, name, msg, request_id=0):
         return self.outbox.on_next(
-            WSEvent(
+            WSSent(
                 name=name,
                 msg=msg,
                 request_id=request_id or new_request_id()

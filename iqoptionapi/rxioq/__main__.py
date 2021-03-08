@@ -22,8 +22,9 @@ if __name__ == "__main__":
         client = await _connect("wss://iqoption.com/echo/websocket")
         websocket = WSConnection(client=client)
 
-        def print_msg(msg):
-            print(f"\n`{msg}`")
+        # def print_msg(msg):
+        #     if msg.name not in ('heartbeat', 'timeSync'):
+        #         print(f"\n`{msg}`")
 
         # websocket.subscribe(on_next=print_msg)
 
@@ -38,8 +39,8 @@ if __name__ == "__main__":
             if not name.strip() or name.strip() == "help":
                 print(
                     "IQOptions Commands:\n"
-                    "exit\n\n"
-                    "subscribeMessage\n"
+                    "\texit\n\n"
+                    "\tsubscribeMessage\n"
                 )
                 continue
 
@@ -51,8 +52,8 @@ if __name__ == "__main__":
             if not msg or msg == "help":
                 print(
                     f"""IQOptions Params for {name}:\n"""
-                    "exit\n\n"
-                    """{"name":"candle-generated","params":{"routingFilters":{"active_id":1,"size":1}}}\n"""
+                    "\texit\n\n"
+                    """\t{"name":"candle-generated","params":{"routingFilters":{"active_id":1,"size":1}}}\n"""
                 )
                 continue
 
@@ -61,6 +62,6 @@ if __name__ == "__main__":
                 break
 
             print(f"sending... {dict(name=name, msg=json.loads(msg))}")
-            api.send(name=name, msg=json.loads(msg))
+            await api.send(name=name, msg=json.loads(msg))
 
     asyncio.run(echonnect(3))

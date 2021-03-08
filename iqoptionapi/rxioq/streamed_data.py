@@ -1,21 +1,20 @@
-from json import dumps
-from dataclasses import asdict
-
-from typing import Any, Callable, Generic, TypeVar
-from .connection import WSEvent
-from rx import operators as ops
-from rx.core.typing import Observable
 from asyncio import Future
+from json import dumps
+from typing import Callable, Generic, TypeVar
 
+from rx import operators as ops
+from rx.core.observable import Observable
+
+from .connection import WSReceived
 
 T = TypeVar('T')
 
 
 class From(Generic[T]):
 
-    def __init__(self, source: Observable[WSEvent],
-                 fn_filter: Callable[[WSEvent], bool] = lambda _: True,
-                 fn_map: Callable[[WSEvent], T] = lambda event: event.msg):
+    def __init__(self, source: Observable,
+                 fn_filter: Callable[[WSReceived], bool] = lambda _: True,
+                 fn_map: Callable[[WSReceived], T] = lambda event: event.msg):
 
         self._last_event = None
         self.state_ready = Future()
@@ -28,10 +27,11 @@ class From(Generic[T]):
             if not self.state_ready.done():
                 self.state_ready.set_result(self)
 
+        self.subscribe = self._source.subscribe
         self._source.subscribe(on_next=update_me)
 
     def __str__(self) -> str:
-        return self._last_event.__str__()
+        return dumps(self._last_event.__str__())
 
     def __repr__(self) -> str:
         return self._last_event.__repr__()
@@ -99,6 +99,48 @@ class From(Generic[T]):
     def __rshift__(self, other):
         return self._last_event.__rshift__(other)
 
+    def __radd__(self, other):
+        return self._last_event.__rshift__(other)
+
+    def __rsub__(self, other):
+        return self._last_event.__sub__(other)
+
+    def __rmul__(self, other):
+        return self._last_event.__mul__(other)
+
+    def __rfloordiv__(self, other):
+        return self._last_event.__floordiv__(other)
+
+    def __rdiv__(self, other):
+        return self._last_event.__div__(other)
+
+    def __rtruediv__(self, other):
+        return self._last_event.__truediv__(other)
+
+    def __rmod__(self, other):
+        return self._last_event.__mod__(other)
+
+    def __rdivmod__(self, other):
+        return self._last_event.__divmod__(other)
+
+    def __rpow__(self, other):
+        return self._last_event.__pow__(other)
+
+    def __rlshift__(self, other):
+        return self._last_event.__lshift__(other)
+
+    def __rrshift__(self, other):
+        return self._last_event.__rshift__(other)
+
+    def __rand__(self, other):
+        return self._last_event.__and__(other)
+
+    def __ror__(self, other):
+        return self._last_event.__or__(other)
+
+    def __rxor__(self, other):
+        return self._last_event.__xor__(other)
+
     def __and__(self, other):
         return self._last_event.__and__(other)
 
@@ -114,8 +156,14 @@ class From(Generic[T]):
     def __bool__(self):
         return self._last_event.__bool__()
 
+    def __int__(self):
+        return self._last_event.__int__()
+
+    def __float__(self):
+        return self._last_event.__float__()
+
     def __getattribute__(self, name):
-        if name in ('_source', '_last_event', 'state_ready'):
+        if name in ('_source', '_last_event', 'state_ready', 'subscribe'):
             return super().__getattribute__(name)
         try:
             return self._last_event[name]
@@ -127,4 +175,3 @@ class From(Generic[T]):
 
     def __iter__(self):
         return self._last_event.__iter__()
-

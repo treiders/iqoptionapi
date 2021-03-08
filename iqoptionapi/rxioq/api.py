@@ -6,12 +6,10 @@ from asyncio import ensure_future
 from dataclasses import dataclass, field
 from typing import Any, Awaitable, Dict
 
-from rx import operators as ops
-
+from . import streamed_data
 from .connection import WSConnection
 from .http_session import HTTPSession
 from .time_sync import TimeSync
-from . import streamed_data
 
 
 def url_of(endpoint) -> str:
@@ -38,7 +36,7 @@ class Api:
             lambda message: int(message.msg)
         )
 
-        self.timesync = TimeSync(server_timestamp=self.heartbeat)
+        self.timesync = TimeSync(timestamp=self.heartbeat)
         self.profile = streamed_data.From[int](
             self.websocket.inbox,
             lambda message: message.name == 'profile',
