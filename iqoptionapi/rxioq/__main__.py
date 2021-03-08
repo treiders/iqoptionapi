@@ -5,12 +5,11 @@ from .http_session import HTTPSession
 if __name__ == "__main__":
     import asyncio
     import json
-    import sys
     import logging
     import os
+    import sys
 
     from websockets.client import connect as _connect
-
 
     LOGLEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
     logging.basicConfig(level=LOGLEVEL)

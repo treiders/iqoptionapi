@@ -1,6 +1,6 @@
 from asyncio import Future
 from json import dumps
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generic, Optional, TypeVar
 
 from rx import operators as ops
 from rx.core.observable import Observable
@@ -15,16 +15,20 @@ class From(Generic[T]):
     def __init__(self, source: Observable,
                  fn_filter: Callable[[WSReceived], bool] = lambda _: True,
                  fn_map: Callable[[WSReceived], T] = lambda event: event.msg,
-                 fn_reduce: Callable[[T, WSReceived], T] = lambda last, new: new):
+                 fn_reduce: Optional[Callable[[T, WSReceived], T]] = None):
 
         self._last_event = None
-        self.state_ready = Future()
+        self.state_ready = Future[T]()
 
         self._source = source.pipe(
             ops.filter(fn_filter), ops.map(fn_map))
 
-        def update_me(message):
-            self._last_event = fn_reduce(self._last_event, message)
+        def update_me(event):
+            if fn_reduce:
+                self._last_event = fn_reduce(self._last_event, event)
+            else:
+                self._last_event = event
+
             if not self.state_ready.done():
                 self.state_ready.set_result(self)
 

@@ -86,7 +86,8 @@ class Api:
         try:
             return super().__getattribute__(name)
         except:
-            try:
-                return self.all_info and self.all_info.__getattribute__(name.replace('_', '-'))
-            except:
-                return self.all_info and self.all_info[name]
+            if self.all_info:
+                try:
+                    return self.all_info.__getattribute__(name.replace('_', '-'))
+                except:
+                    return self.all_info[name]
