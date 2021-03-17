@@ -1,4 +1,4 @@
-from asyncio import Future
+from asyncio import Future, Queue
 from json import dumps
 from typing import Callable, Generic, Optional, TypeVar
 
@@ -16,10 +16,9 @@ class From(Generic[T]):
                  fn_filter: Callable[[WSReceived], bool] = lambda _: True,
                  fn_map: Callable[[WSReceived], T] = lambda event: event.msg,
                  fn_reduce: Optional[Callable[[T, WSReceived], T]] = None):
-
         self._last_event = None
         self.state_ready = Future[T]()
-
+        self._original_source = source
         self._source = source.pipe(
             ops.filter(fn_filter), ops.map(fn_map))
 
@@ -34,6 +33,11 @@ class From(Generic[T]):
 
         self.subscribe = self._source.subscribe
         self._source.subscribe(on_next=update_me)
+
+    def __getattr__(self, name):
+        return From(
+            self._original_source,
+            lambda event: event.name == name.replace('_', '-'))
 
     def __str__(self) -> str:
         return dumps(self._last_event.__str__())
@@ -142,14 +146,6 @@ class From(Generic[T]):
 
     def __float__(self):
         return float(self._last_event)
-
-    def __getattribute__(self, name):
-        if name in ('_source', '_last_event', 'state_ready', 'subscribe'):
-            return super().__getattribute__(name)
-        try:
-            return self._last_event[name]
-        except:
-            return self._last_event.__getattribute__(name)
 
     def __getitem__(self, key):
         return self._last_event.__getitem__(key)
