@@ -15,7 +15,7 @@ class Get_options(Base):
             "user_balance_id": int(balance_id)
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_options_v2(Base):
@@ -30,4 +30,4 @@ class Get_options_v2(Base):
                 "user_balance_id": int(balance_id),
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

@@ -52,4 +52,4 @@ class Buy_place_order_temp(Base):
                 "client_platform_id": "9",  # important can not delete,9 mean your platform is linux
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

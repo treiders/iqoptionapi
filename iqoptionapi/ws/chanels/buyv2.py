@@ -37,4 +37,4 @@ class Buyv2(Base):
             "time": self.api.timesync.server_timestamp,
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

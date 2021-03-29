@@ -18,7 +18,7 @@ class Get_positions(Base):
                 "user_balance_id": int(balance_id),
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_position(Base):
@@ -31,7 +31,7 @@ class Get_position(Base):
                 "position_id": position_id,
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_position_history(Base):
@@ -45,7 +45,7 @@ class Get_position_history(Base):
                 "user_balance_id": int(balance_id),
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_position_history_v2(Base):
@@ -63,7 +63,7 @@ class Get_position_history_v2(Base):
                 "user_balance_id": int(balance_id),
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_digital_position(Base):
@@ -76,4 +76,4 @@ class Get_digital_position(Base):
                 "position_id": position_id,
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

@@ -13,4 +13,4 @@ class ChangeAutoMarginCall(Base):
                 "auto_margin_call": bool(auto_margin_call)
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

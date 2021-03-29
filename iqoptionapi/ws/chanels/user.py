@@ -17,7 +17,7 @@ class Get_user_profile_client(Base):
             "version": "1.0",
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Request_leaderboard_userinfo_deals_client(Base):
@@ -37,7 +37,7 @@ class Request_leaderboard_userinfo_deals_client(Base):
             "version": "1.0",
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Get_users_availability(Base):
@@ -56,4 +56,4 @@ class Get_users_availability(Base):
             "version": "1.0",
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

@@ -21,7 +21,7 @@ class Strike_list(Base):
             },
             "version": "4.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
     def get_digital_expiration_time(self, duration):
         exp = int(self.api.timesync.server_timestamp)

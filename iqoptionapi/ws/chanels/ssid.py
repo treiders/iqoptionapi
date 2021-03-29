@@ -15,4 +15,4 @@ class Ssid(Base):
 
         :param ssid: The session identifier.
         """
-        self.send_websocket_request(self.name, ssid)
+        return self.send_websocket_request(self.name, ssid)

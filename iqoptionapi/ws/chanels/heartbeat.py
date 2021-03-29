@@ -12,4 +12,4 @@ class Heartbeat(Base):
                 "userTime": int(self.api.timesync.server_timestamp * 1000),
             }
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

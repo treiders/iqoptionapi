@@ -18,4 +18,4 @@ class Changebalance(Base):
 
         data = {"balance_id": balance_id}
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

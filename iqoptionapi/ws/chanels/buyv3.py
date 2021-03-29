@@ -29,7 +29,7 @@ class Buyv3(Base):
             "name": "binary-options.open-option",
             "version": "1.0",
         }
-        self.send_websocket_request(self.name, data, str(request_id))
+        return self.send_websocket_request(self.name, data, str(request_id))
 
 
 class Buyv3_by_raw_expired(Base):
@@ -57,7 +57,7 @@ class Buyv3_by_raw_expired(Base):
             "name": "binary-options.open-option",
             "version": "1.0",
         }
-        self.send_websocket_request(self.name, data, str(request_id))
+        return self.send_websocket_request(self.name, data, str(request_id))
 
 
 """

@@ -11,4 +11,4 @@ class Get_Balances(Base):
 
         data = {"name": "get-balances", "version": "1.0"}
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

@@ -25,7 +25,7 @@ class Unsubscribe(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Unsubscribe_candles(Base):
@@ -46,7 +46,7 @@ class Unsubscribe_candles(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Unsubscribe_Instrument_Quites_Generated(Base):
@@ -93,7 +93,7 @@ class Unsubscribe_top_assets_updated(Base):
             },
             "version": "1.2",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Unsubscribe_commission_changed(Base):
@@ -110,7 +110,7 @@ class Unsubscribe_commission_changed(Base):
             },
             "version": "1.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Unscribe_live_deal(Base):
@@ -137,4 +137,4 @@ class Unscribe_live_deal(Base):
             },
             "version": "2.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

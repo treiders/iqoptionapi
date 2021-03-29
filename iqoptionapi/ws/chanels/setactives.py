@@ -16,4 +16,4 @@ class SetActives(Base):
         :param actives: The list of actives identifiers.
         """
         data = {"actives": actives}
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

@@ -17,4 +17,4 @@ class Game_betinfo(Base):
             )
         else:
             data["id[0]"] = int(id_number_list)
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

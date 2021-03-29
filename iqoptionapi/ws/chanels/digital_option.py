@@ -37,4 +37,4 @@ class Digital_options_close_position(Base):
                 "position_id": int(position_id)
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

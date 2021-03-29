@@ -561,17 +561,10 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
             msg = {
                 "name": name,
                 "version": "1.0",
-                "params": {"routingFilters": {"instrument_type": str(instrument_type)}},
-            }
-
-        elif name == "portfolio.get-positions":
-            msg = {
-                "name": name,
-                "version": "3.0",
-                "body": {
-                    "instrument_type": str(instrument_type),
-                    "limit": int(limit),
-                    "offset": int(offset),
+                "params": {
+                    "routingFilters": {
+                        "instrument_type": str(instrument_type)
+                    }
                 },
             }
 
@@ -584,6 +577,17 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
                         "instrument_type": str(instrument_type),
                         "user_balance_id": user_balance_id,
                     }
+                },
+            }
+
+        elif name == "portfolio.get-positions":
+            msg = {
+                "name": name,
+                "version": "3.0",
+                "body": {
+                    "instrument_type": str(instrument_type),
+                    "limit": int(limit),
+                    "offset": int(offset),
                 },
             }
 
