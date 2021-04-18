@@ -142,7 +142,7 @@ class Subscribe_live_deal(Base):
 
 
 class Subscribe_portifolio_order_changes(Base):
-    name: "subscribeMessage"
+    name = "subscribeMessage"
 
     def __call__(self, instrument_type, user_id):
         data = {
@@ -159,7 +159,7 @@ class Subscribe_portifolio_order_changes(Base):
 
 
 class Subscribe_portifolio_position_changes(Base):
-    name: "subscribeMessage"
+    name = "subscribeMessage"
 
     def __call__(self, instrument_type, user_id, user_balance_id):
         data = {

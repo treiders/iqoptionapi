@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass, field
 from json import dumps, loads
-from logging import DEBUG, getLogger
+from logging import WARNING, getLogger
 from time import time
 from typing import Any, Dict
 
@@ -11,7 +11,7 @@ from websockets.client import WebSocketClientProtocol
 from websockets.client import connect as _connect
 
 logger = getLogger(__file__)
-logger.setLevel(DEBUG)
+logger.setLevel(WARNING)
 
 
 def new_request_id() -> int:
@@ -43,6 +43,8 @@ def _wire_inbox(client) -> Subject:
     async def async_emiter():
         try:
             async for message in client:
+                if 'timeSync' not in message and 'heartbeat' not in message:
+                    logger.debug(message)
                 inbox.on_next(WSReceived(raw=loads(message)))
         except Exception as error:
             inbox.on_error(error)

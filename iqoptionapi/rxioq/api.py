@@ -64,7 +64,7 @@ class Api:
         return self.websocket.send(name, msg, request_id)
 
     async def send_websocket_request(self, name, msg, request_id=0):
-        return self.send(name, msg, request_id)
+        return await self.send(name, msg, request_id)
 
     async def request(self, url: str, method="POST", **request_args):
         return self.http.send(url, method=method, **request_args)
