@@ -63,7 +63,9 @@ class MessageTypes(Enum):
         return str(self) == other or super().__eq__(other)
 
     def __cmp__(self, other: object) -> int:
-        return str(self).__cmp__(str(other))
+        gt = (str(self) > str(self))
+        lt = (str(self) < str(self))
+        return gt - lt
 
     def __hash__(self) -> Any:
         return str(self).__hash__()
