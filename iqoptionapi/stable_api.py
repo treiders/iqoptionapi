@@ -12,6 +12,7 @@ import iqoptionapi.country_id as Country
 import iqoptionapi.global_value as global_value
 from iqoptionapi.api import IQOptionAPI
 from iqoptionapi.expiration import get_expiration_time, get_remaning_time
+from iqoptionapi.user_agent import USER_AGENT
 
 
 def nested_dict(n, type):
@@ -19,14 +20,6 @@ def nested_dict(n, type):
         return defaultdict(type)
     else:
         return defaultdict(lambda: nested_dict(n - 1, type))
-
-
-USER_AGENT = (
-    "Mozilla/5.0 (X11; Linux x86_64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/66.0.3359.139 "
-    "Safari/537.36"
-)
 
 
 class IQ_Option:

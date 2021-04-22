@@ -2,6 +2,7 @@ from asyncio import Future, get_event_loop
 from dataclasses import dataclass, field
 
 from requests import Response, Session
+from iqoptionapi.user_agent import USER_AGENT
 
 
 @dataclass
@@ -16,6 +17,7 @@ class HTTPSession:
     login_response: Future[Response] = field(default_factory=Future, repr=False)
 
     def __post_init__(self):
+        self.session.headers["User-Agent"] = self.session.headers.get("User-Agent", USER_AGENT)
         if not self.login_response.done():
             self.login_response = _login_response(self)
 

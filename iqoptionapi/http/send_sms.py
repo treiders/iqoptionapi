@@ -3,13 +3,7 @@
 import json
 
 from iqoptionapi.http.resource import Resource
-
-USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 6.3; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/77.0.3865.90 "
-    "Safari/537.36"
-)
+from iqoptionapi.user_agent import USER_AGENT
 
 
 class SMS_Sender(Resource):
