@@ -1,6 +1,5 @@
 """Module for IQ Option buyV2 websocket chanel."""
 
-import iqoptionapi.global_value as global_value
 from iqoptionapi.expiration import get_expiration_time
 from iqoptionapi.ws.chanels.base import Base
 
@@ -12,7 +11,7 @@ class Buyv2(Base):
 
     name = "sendMessage"
 
-    def __call__(self, price, active, direction, duration):
+    def __call__(self, price, active, direction, duration, balance_id):
         """Method to send message to buyv2 websocket chanel.
         :param price: The buying price.
         :param active: The buying active.
@@ -34,8 +33,8 @@ class Buyv2(Base):
             "exp": int(exp),
             "type": option,
             "direction": direction.lower(),
-            "user_balance_id": int(global_value.balance_id),
+            "user_balance_id": int(balance_id),
             "time": self.api.timesync.server_timestamp,
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

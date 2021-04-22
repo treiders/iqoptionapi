@@ -14,4 +14,4 @@ class Get_overnight_fee(Base):
                 "active_id": active_id,
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

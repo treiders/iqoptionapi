@@ -37,4 +37,4 @@ class Leader_Board(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

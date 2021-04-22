@@ -15,7 +15,7 @@ class Traders_mood_subscribe(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Traders_mood_unsubscribe(Base):
@@ -32,4 +32,4 @@ class Traders_mood_unsubscribe(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

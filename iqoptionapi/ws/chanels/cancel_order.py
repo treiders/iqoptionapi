@@ -12,4 +12,4 @@ class Cancel_order(Base):
                 "order_id": order_id
             },
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)

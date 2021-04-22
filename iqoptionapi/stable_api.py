@@ -12,6 +12,7 @@ import iqoptionapi.country_id as Country
 import iqoptionapi.global_value as global_value
 from iqoptionapi.api import IQOptionAPI
 from iqoptionapi.expiration import get_expiration_time, get_remaning_time
+from iqoptionapi.user_agent import USER_AGENT
 
 
 def nested_dict(n, type):
@@ -19,14 +20,6 @@ def nested_dict(n, type):
         return defaultdict(type)
     else:
         return defaultdict(lambda: nested_dict(n - 1, type))
-
-
-USER_AGENT = (
-    "Mozilla/5.0 (X11; Linux x86_64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/66.0.3359.139 "
-    "Safari/537.36"
-)
 
 
 class IQ_Option:
@@ -878,7 +871,7 @@ class IQ_Option:
 
     def get_optioninfo(self, limit):
         self.api.api_game_getoptions_result = None
-        self.api.get_options(limit)
+        self.api.get_options(limit, global_value.balance_id)
         while self.api.api_game_getoptions_result is None:
             pass
 
@@ -886,7 +879,7 @@ class IQ_Option:
 
     def get_optioninfo_v2(self, limit):
         self.api.get_options_v2_data = None
-        self.api.get_options_v2(limit, "binary,turbo")
+        self.api.get_options_v2(limit, "binary,turbo", global_value.balance_id)
         while self.api.get_options_v2_data is None:
             pass
 
@@ -907,6 +900,7 @@ class IQ_Option:
                     ACTION[idx],
                     expirations[idx],
                     idx,
+                    global_value.balance_id
                 )
             while len(self.api.buy_multi_option) < buy_len:
                 pass
@@ -945,7 +939,8 @@ class IQ_Option:
             direction,
             option,
             expired,
-            request_id=req_id,
+            req_id,
+            global_value.balance_id,
         )
         start_t = time.time()
         id = None
@@ -984,6 +979,7 @@ class IQ_Option:
             str(ACTION),
             int(expirations),
             req_id,
+            global_value.balance_id,
         )
         start_t = time.time()
         id = None
@@ -1151,7 +1147,8 @@ class IQ_Option:
                          + "M" + action + "SPT")
         # self.api.digital_option_placed_id = None
 
-        request_id = self.api.place_digital_option(instrument_id, amount)
+        request_id = self.api.place_digital_option(
+            instrument_id, amount, global_value.balance_id)
 
         while self.api.digital_option_placed_id.get(request_id) is None:
             pass
@@ -1285,7 +1282,7 @@ class IQ_Option:
 
     def buy_digital(self, amount, instrument_id):
         self.api.digital_option_placed_id = None
-        self.api.place_digital_option(instrument_id, amount)
+        self.api.place_digital_option(instrument_id, amount, global_value.balance_id)
         start_t = time.time()
         while self.api.digital_option_placed_id is None:
             if time.time() - start_t > 30:
@@ -1372,6 +1369,7 @@ class IQ_Option:
             use_trail_stop=use_trail_stop,
             auto_margin_call=auto_margin_call,
             use_token_for_commission=use_token_for_commission,
+            balance_id=global_value.balance_id
         )
 
         while self.api.buy_order_id is None:
@@ -1466,7 +1464,7 @@ class IQ_Option:
 
     def get_pending(self, instrument_type):
         self.api.deferred_orders = None
-        self.api.get_pending(instrument_type)
+        self.api.get_pending(instrument_type, global_value.balance_id)
         while self.api.deferred_orders is None:
             pass
         if self.api.deferred_orders["status"] == 2000:
@@ -1477,7 +1475,7 @@ class IQ_Option:
     # this function is heavy
     def get_positions(self, instrument_type):
         self.api.positions = None
-        self.api.get_positions(instrument_type)
+        self.api.get_positions(instrument_type, global_value.balance_id)
         while self.api.positions is None:
             pass
         if self.api.positions["status"] == 2000:
@@ -1519,7 +1517,7 @@ class IQ_Option:
 
     def get_position_history(self, instrument_type):
         self.api.position_history = None
-        self.api.get_position_history(instrument_type)
+        self.api.get_position_history(instrument_type, global_value.balance_id)
         while self.api.position_history is None:
             pass
 
@@ -1532,8 +1530,9 @@ class IQ_Option:
                                 end):
         # instrument_type=crypto forex fx-option multi-option cfd digital-option turbo-option
         self.api.position_history_v2 = None
-        self.api.get_position_history_v2(instrument_type, limit, offset, start,
-                                         end)
+        self.api.get_position_history_v2(
+            instrument_type, global_value.balance_id, limit,
+            offset, start, end)
         while self.api.position_history_v2 is None:
             pass
 

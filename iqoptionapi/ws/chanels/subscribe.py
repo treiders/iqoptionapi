@@ -14,8 +14,6 @@ class Subscribe(Base):
     name = "subscribeMessage"
 
     def __call__(self, active_id, size):
-        # {"name":"subscribeMessage","msg":{"name":"candle-generated","params":{"routingFilters":{"active_id":1,"size":1}}}}
-
         data = {
             "name": "candle-generated",
             "params": {
@@ -26,7 +24,7 @@ class Subscribe(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Subscribe_candles(Base):
@@ -47,7 +45,7 @@ class Subscribe_candles(Base):
             },
         }
 
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Subscribe_Instrument_Quites_Generated(Base):
@@ -65,7 +63,7 @@ class Subscribe_Instrument_Quites_Generated(Base):
             },
             "version": "1.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
     def get_digital_expiration_time(self, duration):
         exp = int(self.api.timesync.server_timestamp)
@@ -94,13 +92,7 @@ class Subscribe_top_assets_updated(Base):
             },
             "version": "1.2",
         }
-        self.send_websocket_request(self.name, data)
-
-
-"""
-{"name":"subscribeMessage","request_id":"s_114","msg":{"name":"commission-changed","version":"1.0","params":{"routingFilters":{"instrument_type":"digital-option","user_group_id":1}}}}
-"""
-# instrument_type: "binary-option"/"turbo-option"/"digital-option"/"crypto"/"forex"/"cfd"
+        return self.send_websocket_request(self.name, data)
 
 
 class Subscribe_commission_changed(Base):
@@ -117,7 +109,7 @@ class Subscribe_commission_changed(Base):
             },
             "version": "1.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
 
 
 class Subscribe_live_deal(Base):
@@ -146,4 +138,39 @@ class Subscribe_live_deal(Base):
             },
             "version": "2.0",
         }
-        self.send_websocket_request(self.name, data)
+        return self.send_websocket_request(self.name, data)
+
+
+class Subscribe_portifolio_order_changes(Base):
+    name = "subscribeMessage"
+
+    def __call__(self, instrument_type, user_id):
+        data = {
+            "name": "portfolio.order-changed",
+            "version": "2.0",
+            "params": {
+                "routingFilters": {
+                    "user_id": user_id,
+                    "instrument_type": instrument_type
+                }
+            }
+        }
+        return self.send_websocket_request(self.name, data)
+
+
+class Subscribe_portifolio_position_changes(Base):
+    name = "subscribeMessage"
+
+    def __call__(self, instrument_type, user_id, user_balance_id):
+        data = {
+            "name": "portfolio.position-changed",
+            "version": "3.0",
+            "params": {
+                "routingFilters": {
+                    "user_id": user_id,
+                    "user_balance_id": user_balance_id,
+                    "instrument_type": instrument_type
+                }
+            }
+        }
+        return self.send_websocket_request(self.name, data)
