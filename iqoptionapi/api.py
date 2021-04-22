@@ -37,6 +37,7 @@ from iqoptionapi.ws.chanels.close_position import Close_position
 from iqoptionapi.ws.chanels.digital_option import (
     Digital_options_close_position,
     Digital_options_place_digital_option,
+    DigitalOptionsPlaceDigitalOptionV2,
 )
 from iqoptionapi.ws.chanels.get_available_leverages import Get_available_leverages
 from iqoptionapi.ws.chanels.get_balances import Get_Balances
@@ -66,6 +67,7 @@ from iqoptionapi.ws.chanels.subscribe import (
     Subscribe_Instrument_Quites_Generated,
     Subscribe_live_deal,
     Subscribe_top_assets_updated,
+    SubscribeDigitalPriceSplitter,
 )
 from iqoptionapi.ws.chanels.technical_indicators import Technical_indicators
 from iqoptionapi.ws.chanels.traders_mood import (
@@ -79,6 +81,7 @@ from iqoptionapi.ws.chanels.unsubscribe import (
     Unsubscribe_commission_changed,
     Unsubscribe_Instrument_Quites_Generated,
     Unsubscribe_top_assets_updated,
+    UnsubscribeDigitalPriceSplitter,
 )
 from iqoptionapi.ws.chanels.user import (
     Get_user_profile_client,
