@@ -58,10 +58,10 @@ class MessageTypes(Enum):
 
     def __str__(self):
         return str(self.value)
-    
+
     def __eq__(self, other: object) -> bool:
         return str(self) == other or super().__eq__(other)
-    
+
     def __cmp__(self, other: object) -> int:
         return str(self).__cmp__(str(other))
 

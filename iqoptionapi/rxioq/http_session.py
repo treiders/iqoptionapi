@@ -1,5 +1,4 @@
 from asyncio import Future, get_event_loop
-from asyncio.base_events import Server
 from dataclasses import dataclass, field
 
 from requests import Response, Session

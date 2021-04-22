@@ -1,4 +1,4 @@
-from asyncio import Future, Queue
+from asyncio import Future
 from json import dumps
 from typing import Callable, Generic, Optional, TypeVar
 
