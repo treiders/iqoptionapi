@@ -9,6 +9,7 @@ from rx.scheduler.eventloop import AsyncIOScheduler
 from rx.subject import Subject
 from websockets.client import WebSocketClientProtocol
 from websockets.client import connect as _connect
+from iqoptionapi.user_agent import USER_AGENT
 
 logger = getLogger(__file__)
 logger.setLevel(WARNING)
@@ -97,7 +98,9 @@ if __name__ == "__main__":
     from asyncio import Queue, gather, run, sleep
 
     async def echonnect(pid: int):
-        client = await _connect("wss://echo.websocket.org/")
+        client = await _connect("wss://echo.websocket.org/", extra_headers={
+            "User-Agent": USER_AGENT
+        })
         connection = WSConnection(client=client)
 
         calls: Queue[int] = Queue()

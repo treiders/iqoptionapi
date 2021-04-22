@@ -1,5 +1,6 @@
 from asyncio import Future, get_event_loop
 from dataclasses import dataclass, field
+from asyncio.base_events import Server
 
 from requests import Response, Session
 from iqoptionapi.user_agent import USER_AGENT
@@ -30,6 +31,13 @@ class HTTPSession:
     async def send(self, url: str, method="POST", **request_args) -> Response:
         await self.login_response
         return await _request(self.session, url=url, method=method, **request_args)
+
+    def __del__(self):
+        print('closing connections')
+        session = Session()
+        session.headers = self.session.headers
+        session.cookies = self.session.cookies
+        session.post("https://auth.iqoption.com/api/v1.0/logout")
 
 
 def _request(session: Session, **request_args):
