@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Any
 
+
 class MessageTypes(Enum):
     API_GAME_BETINFO_RESULT = "api_game_betinfo_result"
     API_GAME_GETOPTIONS_RESULT = "api_game_getoptions_result"

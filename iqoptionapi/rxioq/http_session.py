@@ -1,8 +1,9 @@
 from asyncio import Future, get_event_loop
-from dataclasses import dataclass, field
 from asyncio.base_events import Server
+from dataclasses import dataclass, field
 
 from requests import Response, Session
+
 from iqoptionapi.user_agent import USER_AGENT
 
 

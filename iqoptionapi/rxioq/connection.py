@@ -9,6 +9,7 @@ from rx.scheduler.eventloop import AsyncIOScheduler
 from rx.subject import Subject
 from websockets.client import WebSocketClientProtocol
 from websockets.client import connect as _connect
+
 from iqoptionapi.user_agent import USER_AGENT
 
 logger = getLogger(__file__)
