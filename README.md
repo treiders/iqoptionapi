@@ -9,6 +9,12 @@ este é um repositório não oficial, significa que é mantido pela comunidade
 Esta API está destinada a ser un proyecto de código abierto para comunicarse con el sitio de IqIoption.
 este es un repositorio no oficial, significa que es mantenido por la comunidad
 
+### Canal no youtube explicando com trabalhar com a api
+
+Kodandao com Faria 
+
+https://www.youtube.com/channel/UCetDOTbLD_gCy0aI4aQwMsg
+
 <div align="center">
 	<h2> Idiomas | Languages </h2>
 	<a href="https://iqoptionapi.github.io/iqoptionapi/pt/">
@@ -223,7 +229,9 @@ while True:
 ````
 
 ---
+
 ## Como realizar login com 2 fatores
+
 ```python
 from iqoptionapi.stable_api import IQ_Option
 
@@ -277,7 +285,38 @@ print(Iq.check_connect())
 Iq.connect()
 ```
 
+### <a id=payout_digital>Nova função de captura payout digital</a>
+
 ---
+
+```python
+active = 'EURUSD'
+payout = Iq.get_digital_payout(active)
+print(payout)
+```
+
+---
+
+### <a id=by_payout_digital>Nova função de abertura de ordem na digital</a>
+
+---
+
+```python
+active = 'EURUSD'
+amount = 100.0
+action = 'CALL'
+duration = 1
+status, order_id = Iq.buy_digital_spot_v2(active, amount, action, duration)
+print(status, order_id)
+```
+
+---
+
+```python
+active = 'EURUSD'
+payout = Iq.get_digital_payout(active)
+print(payout)
+```
 
 ---
 

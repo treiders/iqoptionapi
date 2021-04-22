@@ -176,6 +176,7 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
     users_availability = None
 
     # ------------------
+    digital_payout = None
 
     def __init__(self, host, username, password, proxies=None):
         """
@@ -457,6 +458,7 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
         return Getprofile(self)
 
     # for active code ...
+
     @property
     def get_balances(self):
         """Property for get IQ Option http getprofile resource.
@@ -486,6 +488,7 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
         return Ssid(self)
 
     # --------------------------------------------------------------------------------
+
     @property
     def Subscribe_Live_Deal(self):
         return Subscribe_live_deal(self)
@@ -869,6 +872,7 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
                 response = self.login(
                     self.username, self.password
                 )  # pylint: disable=not-callable
+
             else:
                 response = self.login_2fa(
                     self.username, self.password, self.token_login2fa
@@ -974,3 +978,15 @@ class IQOptionAPI:  # pylint: disable=too-many-instance-attributes
     @property
     def Get_Users_Availability(self):
         return Get_users_availability(self)
+
+    @property
+    def subscribe_digital_price_splitter(self):
+        return SubscribeDigitalPriceSplitter(self)
+
+    @property
+    def unsubscribe_digital_price_splitter(self):
+        return UnsubscribeDigitalPriceSplitter(self)
+
+    @property
+    def place_digital_option_v2(self):
+        return DigitalOptionsPlaceDigitalOptionV2(self)
