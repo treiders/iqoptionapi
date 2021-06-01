@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass, field
 from json import dumps, loads
-from logging import WARNING, getLogger
+from logging import getLogger
 from time import time
 from typing import Any, Dict
 
@@ -12,8 +12,8 @@ from websockets.client import connect as _connect
 
 from iqoptionapi.user_agent import USER_AGENT
 
-logger = getLogger(__file__)
-logger.setLevel(WARNING)
+logger_in = getLogger(f'INPUT:{__file__}')
+logger_out = getLogger(f'OUTPUT:{__file__}')
 
 
 def new_request_id() -> int:
@@ -46,7 +46,7 @@ def _wire_inbox(client) -> Subject:
         try:
             async for message in client:
                 if 'timeSync' not in message and 'heartbeat' not in message:
-                    logger.debug(message)
+                    logger_in.debug(message)
                 inbox.on_next(WSReceived(raw=loads(message)))
         except Exception as error:
             inbox.on_error(error)
@@ -59,6 +59,7 @@ def _wire_outbox(client) -> Subject:
     outbox = Subject()
 
     async def send(message):
+        logger_out.debug(message)
         await client.send(dumps(asdict(message)))
 
     outbox.subscribe(

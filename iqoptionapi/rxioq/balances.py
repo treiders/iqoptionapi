@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import Enum, IntEnum, unique
 
 
 @unique
-class BalanceTypes(Enum):
+class BalanceTypes(IntEnum):
     REAL = 1
     TOURNAMENT = 2
     PRATICE = 4
@@ -11,19 +11,19 @@ class BalanceTypes(Enum):
 
 @unique
 class BalanceOrderChanged(Enum):
+    BINARY_OPTION = "binary"
     CFD = "cfd"
-    FOREX = "forex"
     CRYPTO = "crypto"
     DIGITAL_OPTION = "digital-option"
+    FOREX = "forex"
     TURBO_OPTION = "turbo"
-    BINARY_OPTION = "binary"
 
 
 @unique
 class BalancePositionChanged(Enum):
+    BINARY_OPTION = "binary-option"
     CFD = "cfd"
     CRYPTO = "crypto"
-    FOREX = "forex"
     DIGITAL_OPTION = "digital-option"
-    BINARY_OPTION = "binary-option"
+    FOREX = "forex"
     TURBO_OPTION = "turbo-option"

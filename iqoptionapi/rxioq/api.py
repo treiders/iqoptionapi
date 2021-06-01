@@ -12,7 +12,7 @@ from .http_session import HTTPSession
 from .time_sync import TimeSync
 
 
-def url_of(endpoint) -> str:
+def url_of(endpoint: str) -> str:
     return f"https://iqoption.com/api/{endpoint}"
 
 
